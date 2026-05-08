@@ -1,0 +1,42 @@
+template:
+  name: CDS123231_Template
+  identifier: CDS123231_Template
+  versionLabel: "1.0"
+  type: Stage
+  projectIdentifier: DoNotDeleteMani
+  orgIdentifier: default
+  tags: {}
+  spec:
+    type: Deployment
+    spec:
+      deploymentType: Kubernetes
+      gitOpsEnabled: false
+      service:
+        serviceRef: <+input>
+      environment:
+        environmentRef: <+input>
+        deployToAll: false
+        infrastructureDefinitions: <+input>
+      execution:
+        steps:
+          - step:
+              type: ShellScript
+              name: Hello
+              identifier: Hello
+              spec:
+                shell: Bash
+                onDelegate: true
+                source:
+                  type: Inline
+                  spec:
+                    script: echo "Hello from template"
+                environmentVariables: []
+                outputVariables: []
+              timeout: 10m
+        rollbackSteps: []
+    failureStrategies:
+      - onFailure:
+          errors:
+            - AllErrors
+          action:
+            type: StageRollback
